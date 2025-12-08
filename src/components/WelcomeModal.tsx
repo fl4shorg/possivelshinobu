@@ -1,22 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { getTotalEndpoints, getTotalCategories } from '@/data/mockApi';
 import { useAudio } from '@/contexts/AudioContext';
 
-const WELCOME_SHOWN_KEY = 'shinobu_welcome_shown';
-
 export const WelcomeModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { audioRef } = useAudio();
   const totalEndpoints = getTotalEndpoints();
   const totalCategories = getTotalCategories();
-
-  useEffect(() => {
-    const hasSeenWelcome = sessionStorage.getItem(WELCOME_SHOWN_KEY);
-    if (!hasSeenWelcome) {
-      setIsOpen(true);
-    }
-  }, []);
 
   const playMusic = () => {
     if (audioRef.current) {
@@ -28,14 +19,12 @@ export const WelcomeModal = () => {
 
   const handleEnter = () => {
     playMusic();
-    sessionStorage.setItem(WELCOME_SHOWN_KEY, 'true');
     setIsOpen(false);
   };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       playMusic();
-      sessionStorage.setItem(WELCOME_SHOWN_KEY, 'true');
     }
     setIsOpen(open);
   };
